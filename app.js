@@ -5,11 +5,18 @@ const app=express();
 const cors = require('cors');
 const FrontendRoute=require('./routes/frontend.js');
 
+const sequelize=require('./util/database.js')
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use(express.static(path.join(__dirname,'public')))
 app.use(FrontendRoute);
-
-app.listen(3000)
+sequelize.sync({force:true})
+.then(()=>{
+    app.listen(3000)
+})
+.catch(err=>{
+    console.log('err',err)
+})
