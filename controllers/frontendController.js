@@ -1,6 +1,6 @@
 const path=require('path')
 const User=require('../models/user')
-
+const bcrypt=require('bcrypt')
 function isstringinvalid(string){
          if(string==undefined||string.length==0){
             return true
@@ -26,47 +26,56 @@ try{
 
     return res.status(400).json({err:"paratemers are missing"})
    }
-    await User.create({
-              username:username,
-              email:email,
-              password:password
-    })
-        //res.sendFile(path.join(__dirname,'../','views','loginpage.html'))
-        res.status(201).json({msg:'succussfully created user'})
+
+   const saltrounds=10
+   bcrypt.hash(password,saltrounds,async (err,hash)=>{
+      console.log(err)
+      await User.create({
+        username:username,
+        email:email,
+        password:hash
+})
+  //res.sendFile(path.join(__dirname,'../','views','loginpage.html'))
+ 
+   })
+   res.status(201).json({msg:'succussfully created user'})
+   
 }
 
     catch(err){
         console.log(err)
-        res.status(403).send(`<div style="color:red;">${err}</div>`)
+        res.status(500).send(`<div style="color:red;">${err}</div>`)
     }
           
 }
 
 exports.userlogin=(req,res,next)=>{
-    try{
-
-    
+    try{   
     const email=req.body.email;
     const password=req.body.password;
-
     console.log(email,password)
+
     if(isstringinvalid(email)||isstringinvalid(password)){
         return res.status(400).json({err:"paratemers are missing"})
     }
+
     User.findOne({where:{email:email}})
     .then(data=>{
-        if(data.password===password){
-            res.status(200).json({login:'succussfully logedin'})
-        }
-        else{
-            res.status(404).json({err:'password doesnt not match'})
-        }
+        bcrypt.compare(password,data.password,(err,result)=>{
+            if(!err){
+                res.status(201).json({message:'succussfully loggedin'})
+            }
+            else{
+                res.status(401).json({message:'password doesnt not match'})
+            }
+        })
+       
     })
     .catch(err=>{
         res.status(404).json({err:'user does not exit'})
     })
 }
 catch(err){
-    res.status(403).join({err:"err in catch nlcok login"})
+    res.status(500).join({err:"err in catch blcok login"})
 }
 }
