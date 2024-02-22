@@ -24,7 +24,7 @@ try{
    console.log(username,email,password)
    if(isstringinvalid(username)||isstringinvalid(email)||isstringinvalid(password)){
 
-    return res.status(400).json({err:"paratemers are missing"})
+     return res.status(400).json({err:"paratemers are missing"})
    }
 
    const saltrounds=10
@@ -49,7 +49,7 @@ try{
           
 }
 
-exports.userlogin=(req,res,next)=>{
+exports.userlogin=async (req,res,next)=>{
     try{   
     const email=req.body.email;
     const password=req.body.password;
@@ -59,9 +59,10 @@ exports.userlogin=(req,res,next)=>{
         return res.status(400).json({err:"paratemers are missing"})
     }
 
-    User.findOne({where:{email:email}})
-    .then(data=>{
-        bcrypt.compare(password,data.password,(err,result)=>{
+   const user =await User.findOne({where:{email:email}})
+
+
+        bcrypt.compare(password,user.password,(err,result)=>{
             if(!err){
                 res.status(201).json({message:'succussfully loggedin'})
             }
@@ -69,13 +70,8 @@ exports.userlogin=(req,res,next)=>{
                 res.status(401).json({message:'password doesnt not match'})
             }
         })
-       
-    })
-    .catch(err=>{
-        res.status(404).json({err:'user does not exit'})
-    })
 }
 catch(err){
-    res.status(500).join({err:"err in catch blcok login"})
+    res.status(500).json({err:"err in catch blcok login"})
 }
 }
