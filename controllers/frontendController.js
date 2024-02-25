@@ -1,6 +1,7 @@
 const path=require('path')
 const User=require('../models/user')
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
 function isstringinvalid(string){
          if(string==undefined||string.length==0){
             return true
@@ -8,6 +9,9 @@ function isstringinvalid(string){
          else{
             return false
          }
+}
+function generateAccesstoken(id,email){
+    return jwt.sign({userId:id,email:email},'secretkey');
 }
 
 exports.signup=(req,res,next)=>{
@@ -64,7 +68,7 @@ exports.userlogin=async (req,res,next)=>{
 
         bcrypt.compare(password,user.password,(err,result)=>{
             if(!err){
-                res.status(201).json({message:'succussfully loggedin'})
+                res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
             }
             else{
                 res.status(401).json({message:'password doesnt not match'})

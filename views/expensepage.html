@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <style>
+        body{
+            
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  button{
+   
+    padding: 10px 20px;
+    background-color: #696e72;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    width: auto;
+  
+  }
+  button:hover{
+    background-color: #0056b3;
+  }
+     .form-container{
+         display: flex;
+         flex-direction: column;
+         width:400px;
+         margin:5px;
+         margin-left: 40px;
+         color: rgb(84, 88, 89);
+     }
+     .form-group {
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="select"],
+  select {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+    font-family:monospace;
+    border-radius: 5px;
+  }
+
+  .heading{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align: center;
+    font-style: italic;
+    color:crimson
+  }
+  .btn{
+    width: auto;
+    border:1px solid gray;
+  }
+  .btn:hover{
+    background-color:orange;
+  }
+
+  .card{
+
+    display: flex;
+    border:2px #696e72;
+    flex-direction: row;
+    font-size: 20px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    width: 800px;
+    font-family: monospace;
+    color:darkred;
+
+  }
+  .bg-container{
+    display: flex;
+    flex-direction: column;
+     
+  }
+
+  .listofitems{
+    margin-top: 30px;
+    margin-left: 200px;
+  }
+    </style>
+</head>
+<body>
+    <div class="bg-container">
+        <div class="heading">
+            <h1>Expense Tracker</h1>
+        </div>
+        <div class="form-container">
+           <form class="myform" onsubmit="expense(event)">
+            <div class="form-group">
+            <label for="name">Product Amount:</label>
+           
+            <input type="text" id="amount">
+             </div>
+             <div class="form-group">
+            <label>Choose a Category:</label><select id="category">
+                <option>Movie</option>
+                <option>Clothes</option>
+                <option>Sports</option>
+                <option>others</option>
+            </select>
+            </div>
+            <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" id="description">
+            </div>
+            <button>Add Expense</button>
+            
+           </form>  
+        </div>
+        <div class="listofitems">
+        
+        </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+<script src="/expense.js"></script>
+</html>
