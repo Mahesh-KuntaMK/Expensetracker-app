@@ -60,7 +60,8 @@ function showOnScreen(product){
 async function deleteProduct(id){
    try{
      console.log(id);
-   const product=await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`)
+     const token=localStorage.getItem('token');
+   const product=await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`,{headers:{"Authorization":token}})
          console.log(product)
          console.log(product.id)
          removeFromScreen(product.data.id);
@@ -80,4 +81,11 @@ function removeFromScreen(id){
  if(nodetobedeleted){
      parentNode.removeChild(nodetobedeleted);
  }
+}
+
+
+document.getElementById('rzpbtn').onclick=async ()=>{
+
+        
+
 }

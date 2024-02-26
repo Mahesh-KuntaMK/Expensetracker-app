@@ -17,7 +17,7 @@ Expense.belongsTo(User);
 app.use(express.static(path.join(__dirname,'public')))
 app.use(FrontendRoute);
 app.use('/expense',expanseRoute);
-sequelize.sync({force:true})
+sequelize.sync()
 .then(()=>{
     app.listen(3000)
 })
