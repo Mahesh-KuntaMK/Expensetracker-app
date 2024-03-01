@@ -7,11 +7,11 @@ exports.authentication=(req,res,next)=>{
    // console.log(req.headers)
     try{
         const token=req.header('Authorization');
-        console.log(token);
+       // console.log(token);
         const user=jwt.verify(token, 'secretkey');
-        console.log('userID>>>',user.userId);
+       console.log('userID>>>',user.userId);
         User.findByPk(user.userId).then(user=>{
-            console.log(user,'post')
+           // console.log(user,'post')
             req.user=user
             next();
         })
@@ -27,7 +27,7 @@ exports.authentication1=(req,res,next)=>{
    // console.log(req.headers)
     try{
         const token=req.header('Authorization');
-        console.log(token);
+        console.log(token,'post');
         const user=jwt.verify(token, 'secretkey');
         console.log('userID>>>',user.userId);
         User.findByPk(user.userId).then(user=>{

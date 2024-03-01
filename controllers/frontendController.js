@@ -2,6 +2,8 @@ const path=require('path')
 const User=require('../models/user')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
+const Razorpay=require('razorpay') 
+
 function isstringinvalid(string){
          if(string==undefined||string.length==0){
             return true
@@ -78,4 +80,10 @@ exports.userlogin=async (req,res,next)=>{
 catch(err){
     res.status(500).json({err:"err in catch blcok login"})
 }
+}
+
+
+exports.getpremium=(req,res,next)=>{
+
+    
 }
