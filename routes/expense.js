@@ -1,13 +1,19 @@
 const express=require('express');
 const routes=express.Router();
-const expanseController=require('../controllers/expenseController');
+const expenseController=require('../controllers/expenseController');
 const authController=require('../middleware/authentication');
 
 
 
-routes.get('/',expanseController.expense);
-routes.post('/addexpense',authController.authentication1,expanseController.addExpense);
-routes.get('/getexpense',authController.authentication,expanseController.getExpense);
-routes.delete('/delete-expense/:expenseId',expanseController.deleteExpense)
 
-module.exports=routes;
+routes.get('/',expenseController.expense);
+
+routes.get('/getexpense',authController.authentication,expenseController.getExpense);
+
+routes.post('/addexpense',authController.authentication,expenseController.addExpense);
+
+
+
+routes.delete('/delete-expense/:expenseId',authController.authentication,expenseController.deleteExpense);
+
+module.exports=routes;          

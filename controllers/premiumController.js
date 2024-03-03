@@ -16,10 +16,11 @@ exports.gopremium=(req,res,next)=>{
     
     try{
         const rzp=new Razorpay({
-            key_id:'rzp_test_6Udu1Y3seNiexI',
-            key_secret:'WbKSjSdThIm6wPsKkJ146lmf'
+            key_id:process.env.razor_key_id,
+            key_secret:process.env.razor_key_secret
         })
  
+
     
        rzp.orders.create({'amount':10000,'currency':"INR"},(err,order)=>{
           if(!err){

@@ -88,9 +88,15 @@ function removeFromScreen(id){
 
 function isPremiumUser(premium){
     const premiumbtn=document.getElementById('rzpbtn');
+    const premiumclass=document.querySelector('.premiumbtn');
+
   if(premium){
            //disable button
            premiumbtn.style.display='none'
+           premiumclass.innerHTML=`Your a premium user<button onclick=leaderboard(event) id='leaderboardbtn' class='btn'>Leaderboard</button>`
+           
+           
+
   }
   else{
     premiumbtn.style.display='block'
@@ -147,4 +153,34 @@ document.getElementById('rzpbtn').onclick=async (e)=>{
         })
            
       }); 
+}
+
+
+function leaderboard(event){
+  console.log('leadeeboard')
+
+  const token=localStorage.getItem('token');
+
+const leadeeboardbtn=document.getElementById('leaderboardbtn')
+
+const leaderboardcontainer=document.querySelector('.leaderboard-container');
+
+leaderboardcontainer.classList.add('block');
+
+
+axios.get('http://localhost:3000/premium/leaderboard',{headers:{'Authorization':token}}).then(res=>{  
+          const listofexpenses=document.getElementById('listofexpenses')
+          leadeeboardbtn.style.display='none'
+         
+          res.data.forEach(response=>{
+            
+                   listofexpenses.innerHTML+=`<li> name:${response.name} total_amount:${response.total_amount}</li>`
+              
+          })
+         
+})
+.catch(err=>{
+  console.log(err)
+})
+
 }

@@ -12,6 +12,20 @@
     margin: 0;
     padding: 0;
   }
+  .container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .leaderboard-container{
+    display:none;
+    margin-right: 400px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+   
+  }
+  .block{
+    display: block;
+  }
   button{
    
     padding: 10px 20px;
@@ -96,11 +110,12 @@
         <div class="heading">
             <h1>Expense Tracker</h1>
         </div>
+        <div class="container">
         <div class="form-container">
            <form class="myform" onsubmit="expense(event)">
             <div class="form-group">
             <label for="name">Product Amount:</label>
-           
+
             <input type="text" id="amount">
              </div>
              <div class="form-group">
@@ -115,15 +130,30 @@
             <label for="description">Description:</label>
             <input type="text" id="description">
             </div>
-            <button>Add Expense</button>
-            
-           </form>  
+            <button type="submit">Add Expense</button>     
+           </form> <br>
+          
         </div>
+        <div class="leaderboard-container">
+               <div class="leaderheading" style="font-size: 20px;margin-bottom: 10px;">leaderBoard</div>
+               <div class="listofexpenses">
+                <ul id="listofexpenses">
+
+              </ul>
+               </div>
+
+        </div>
+      </div>
+        <div class="premiumbtn">
+        <button style="width:130px;" id="rzpbtn">Go Premium</button>
+      </div>
         <div class="listofitems">
         
         </div>
     </div>
 </body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
 <script src="/expense.js"></script>
 </html>

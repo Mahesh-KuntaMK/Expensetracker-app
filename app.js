@@ -1,10 +1,12 @@
 const express=require('express');
 const path=require('path');
 const bodyParser=require('body-parser')
+require('dotenv').config();
 const app=express();
 const cors = require('cors');
 const FrontendRoute=require('./routes/frontend.js');
 const expanseRoute=require('./routes/expense.js');
+const premiumfeatureRoute=require('./routes/premium.js');
 
 const premiumRoute=require('./routes/purchase.js')
 const sequelize=require('./util/database.js');
@@ -23,6 +25,7 @@ app.use(express.static(path.join(__dirname,'public')))
 app.use(FrontendRoute);
 app.use('/expense',expanseRoute);
 app.use('/purchase',premiumRoute);
+app.use('/premium',premiumfeatureRoute);
 sequelize.sync()
 .then(()=>{
     app.listen(3000)
