@@ -12,19 +12,25 @@ const sequelize = require('../util/database');
 exports.leaderboard=async(req,res,next)=>{
 try{
    console.log('ekko')
-  const   user=await User.findAll({
-    attributes:['id','username',[sequelize.fn('sum',sequelize.col('expenses.amount')),'total_cost']],
-    include:[
-      {
-        model:Expense,
-        attributes:[],
 
-      },
-     
-    ],
+   const userExpense=await User.findAll({
+    attributes:['id','username','totalExpense'],
     group:['user.id'],
-    order:[['total_cost','DESC']]
-  });
+     order:[['totalExpense','DESC']]
+   })
+  // const   user=await User.findAll({
+  //   attributes:['id','username',[sequelize.fn('sum',sequelize.col('expenses.amount')),'total_cost']],
+  //   include:[
+  //     {
+  //       model:Expense,
+  //       attributes:[],
+
+  //     },
+     
+  //   ],
+  //   group:['user.id'],
+  //   order:[['total_cost','DESC']]
+  // });
   // const   expense= await Expense.findAll({
   //   attributes:['userId',[sequelize.fn('sum',sequelize.col('expense.amount')),'total_cost']],
   //   group:['userId']
@@ -57,7 +63,7 @@ try{
 
   // console.log(userDetails);
      
-  return res.status(200).json(user);
+  return res.status(200).json(userExpense);
 }
 catch(err){
   console.log(err)

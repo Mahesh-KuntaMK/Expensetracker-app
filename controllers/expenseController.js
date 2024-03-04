@@ -32,9 +32,22 @@ try{
     return res.status(400).json({message:'parameters can never be empty'})
 
    }
+
+   let total_amount
+if(req.user.totalExpense){
+     total_amount=parseInt(req.user.totalExpense);
+}
+else{
+    total_amount=0;
+}
+  
   
 
    const product=await req.user.createExpense({amount,category,description})
+
+
+   req.user.update({'totalExpense':(total_amount+parseInt(product.amount))})
+
    
     res.status(201).json(product)
 
