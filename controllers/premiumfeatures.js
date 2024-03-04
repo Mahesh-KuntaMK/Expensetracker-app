@@ -4,45 +4,64 @@ const Expense=require('../models/expense')
 const User=require('../models/user');
 const { where } = require('sequelize');
 
-const Razorpay=require('razorpay')
+const Razorpay=require('razorpay');
+const sequelize = require('../util/database');
 
 
 
 exports.leaderboard=async(req,res,next)=>{
 try{
+   console.log('ekko')
+  const   user=await User.findAll({
+    attributes:['id','username',[sequelize.fn('sum',sequelize.col('expenses.amount')),'total_cost']],
+    include:[
+      {
+        model:Expense,
+        attributes:[],
 
-  const   user=await User.findAll();
-  const   expense= await Expense.findAll();
-
-  console.log('hello')
-
-  const expenseDetails={
-
-  }
-  console.log(expense)
-
-  expense.forEach((expense)=>{
-    if(expenseDetails[expense.userId]){
-        expenseDetails[expense.userId]=expenseDetails[expense.userId]+expense.amount
-    }  else{
-              expenseDetails[expense.userId]=expense.amount
-    }
-  })
-
-  const userDetails=[];
-
-  user.forEach(user=>{
-      userDetails.push({name:user.username,total_amount:expenseDetails[user.id]||0})
-  })
-
-  userDetails.sort((a,b)=>b.total_amount-a.total_amount)
-
-  console.log(userDetails);
+      },
      
-  return res.status(200).json(userDetails);
+    ],
+    group:['user.id'],
+    order:[['total_cost','DESC']]
+  });
+  // const   expense= await Expense.findAll({
+  //   attributes:['userId',[sequelize.fn('sum',sequelize.col('expense.amount')),'total_cost']],
+  //   group:['userId']
+  // }
+    
+  // );
+
+  // console.log(expense)
+
+  // const expenseDetails={
+
+  // }
+  // console.log(expense)
+
+  // expense.forEach((expense)=>{
+  //   if(expenseDetails[expense.userId]){
+  //       expenseDetails[expense.userId]=expenseDetails[expense.userId]+expense.amount
+  //   }  else{
+  //             expenseDetails[expense.userId]=expense.amount
+  //   }
+  // })
+
+  // const userDetails=[];
+
+  // user.forEach(user=>{
+  //     userDetails.push({name:user.username,total_amount:expenseDetails[user.id]||0})
+  // })
+
+  // userDetails.sort((a,b)=>b.total_amount-a.total_amount)
+
+  // console.log(userDetails);
+     
+  return res.status(200).json(user);
 }
 catch(err){
-    return res.status(500).json({error:err})
+  console.log(err)
+    return res.status(500).json(err)
 }
 
 }
