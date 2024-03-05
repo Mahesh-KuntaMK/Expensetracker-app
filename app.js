@@ -4,7 +4,7 @@ const bodyParser=require('body-parser')
 require('dotenv').config();
 const app=express();
 const cors = require('cors');
-const FrontendRoute=require('./routes/frontend.js');
+const FrontendRoute=require('./routes/frontend.js')
 const expanseRoute=require('./routes/expense.js');
 const premiumfeatureRoute=require('./routes/premium.js');
 

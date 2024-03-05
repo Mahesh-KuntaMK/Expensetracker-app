@@ -4,6 +4,10 @@ const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const Razorpay=require('razorpay') 
 
+require('dotenv').config();
+
+const Sib=require('sib-api-v3-sdk');
+
 function isstringinvalid(string){
          if(string==undefined||string.length==0){
             return true
@@ -35,22 +39,31 @@ try{
 
    const saltrounds=10
    bcrypt.hash(password,saltrounds,async (err,hash)=>{
-      console.log(err)
-      await User.create({
+ if(err){
+    throw new Error(err);
+ }
+      User.create({
         username:username,
         email:email,
         password:hash
+}).then(()=>{
+    res.status(201).json({msg:'succussfully created user'})
+})
+.catch((err)=>{
+    res.status(500).json({err:err,msg:'email is already registered'})
 })
   //res.sendFile(path.join(__dirname,'../','views','loginpage.html'))
+  
  
    })
-   res.status(201).json({msg:'succussfully created user'})
+   
    
 }
 
     catch(err){
-        console.log(err)
-        res.status(500).send(`<div style="color:red;">${err}</div>`)
+        console.log('err')
+        //console.log(err)
+        res.status(500).json({err:err,msg:'email is already registered'})
     }
           
 }
@@ -67,23 +80,67 @@ exports.userlogin=async (req,res,next)=>{
 
    const user =await User.findOne({where:{email:email}})
 
+   console.log(password,'password entered in login page')
 
+   console.log(user.password,'password entered array')
+
+  
         bcrypt.compare(password,user.password,(err,result)=>{
-            if(!err){
-                res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
+            if(result){
+                console.log('login','pasword not match')
+                return res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
             }
             else{
-                res.status(401).json({message:'password doesnt not match'})
+               return res.status(401).json({message:'password doesnt not match'})
             }
         })
 }
 catch(err){
-    res.status(500).json({err:"err in catch blcok login"})
+    return res.status(500).json({err:err})
 }
 }
 
 
-exports.getpremium=(req,res,next)=>{
+exports.forgotPassword=(req,res,next)=>{
+       
+          
+    res.sendFile(path.join(__dirname,'../','views','forgotpassword.html'))
+
 
     
+}
+
+exports.resetPassword=(req,res,next)=>{
+
+    console.log(req.body.email);
+    res.status(200).json("password reset link sent to registed mail id")
+
+
+    const {email}=req.body;
+
+    const client=Sib.ApiClient.instance
+    const apiKey=client.authentications['api-key'];
+    apiKey.apiKey=process.env.Sib_Api_Key
+    const transEmailApi=new Sib.TransactionalEmailsApi();
+
+    const sender={
+        email:'k.maheshkunta@gmail.com',
+
+    }
+
+    const receivers=[{
+        email:email
+    
+    }]
+
+transEmailApi.sendTransacEmail({
+    sender,
+    to:receivers,
+    subject:' password reset link since you have forgotten current password',
+    textContent:`hello this is ur passord reset link`,
+})
+
+.then(console.log)
+.catch(console.log)
+
 }

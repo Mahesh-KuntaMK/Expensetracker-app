@@ -21,10 +21,16 @@ try{
 
    }
    else{
-    throw new Error(err)
+    throw  new Error(err)
    }
 }
 catch(err){
     document.body.innerHTML+=`<div style="color:red;">${err}</div>`
 }
 }
+const button = document.getElementById("forgotpasswordbtn");
+
+button.addEventListener("click", async(event) => {
+
+    window.location.href='/password/forgotpassword'
+})
