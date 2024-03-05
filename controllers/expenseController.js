@@ -2,6 +2,8 @@ const path=require('path')
 const Expense=require('../models/expense')
 const User=require('../models/user');
 const { where } = require('sequelize');
+const sequelize=require('../util/database');
+
 
 const Razorpay=require('razorpay')
 
@@ -22,9 +24,11 @@ exports.expense=(req,res,next)=>{
 
 
 exports.addExpense=async (req,res,next)=>{
+    const t = await sequelize.transaction();
 try{
   // console.log(res,'postexpense');
    //console.log(req.user);
+ //  const t = await sequelize.transaction();
    const {amount,category,description}=req.body;
    
    if(isstringinvalid(amount)||isstringinvalid(category)||isstringinvalid(description)){
@@ -33,28 +37,27 @@ try{
 
    }
 
-   let total_amount
-if(req.user.totalExpense){
-     total_amount=parseInt(req.user.totalExpense);
-}
-else{
-    total_amount=0;
-}
+
   
   
 
-   const product=await req.user.createExpense({amount,category,description})
+   const product=await req.user.createExpense({amount,category,description},{ transaction: t })
+
+   const total_amount=Number(req.user.totalExpense)+Number(product.amount)
 
 
-   req.user.update({'totalExpense':(total_amount+parseInt(product.amount))})
-
+  await  req.user.update({'totalExpense':total_amount},{ transaction: t });
+  
+   await t.commit();
    
     res.status(201).json(product)
 
 }
 catch(err){
    // console.log(err);
-    res.status(500).json({message:'unable to add expensese'})
+  await t.rollback();
+
+    res.status(500).json(err)
 }
 
 }
@@ -72,19 +75,30 @@ exports.getExpense=async (req,res,next)=>{
 }
 
 exports.deleteExpense=async (req,res,next)=>{
+const t=await sequelize.transaction();
    try{
     const prodid=req.params.expenseId
 
-    const product=await Expense.findOne({where:{id:prodid,userId:req.user.id}})
+    const product=await Expense.findOne({where:{id:prodid,userId:req.user.id},transaction:t})
 
-    const deletedproduct=await product.destroy();
+    const amounttodeducted=product.amount;
+    const totalExpense=Number(req.user.totalExpense)-Number(amounttodeducted);
+
+  
+
+    const deletedproduct=await product.destroy({transaction:t});
+
+    await req.user.update({'totalExpense':totalExpense},{transaction:t})
 
     //console.log(deletedproduct)
+    await t.commit();
 
     res.json(deletedproduct)
    }
    catch(err){
+    await t.rollback();
     console.log(err)
+    res.status(500).json({err:err,msg:'deleted failed '})
    }
 
 }
