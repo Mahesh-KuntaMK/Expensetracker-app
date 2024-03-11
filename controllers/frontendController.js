@@ -3,6 +3,7 @@ const User=require('../models/user')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const Razorpay=require('razorpay') 
+const uuid = require('uuid');
 
 require('dotenv').config();
 
@@ -113,34 +114,55 @@ exports.forgotPassword=(req,res,next)=>{
 exports.resetPassword=(req,res,next)=>{
 
     console.log(req.body.email);
-    res.status(200).json("password reset link sent to registed mail id")
+    //res.status(200).json("password reset link sent to registed mail id")
 
 
     const {email}=req.body;
 
-    const client=Sib.ApiClient.instance
-    const apiKey=client.authentications['api-key'];
-    apiKey.apiKey=process.env.Sib_Api_Key
-    const transEmailApi=new Sib.TransactionalEmailsApi();
+    User.findOne({where:{email:email}})
+    .then((user)=>{
+       const  id=uuid.v4();
+       
+        return user.createForgotpassword({id,isActive:'true'})
+    })
+    .then((reqkey)=>{
 
-    const sender={
-        email:'k.maheshkunta@gmail.com',
-
-    }
-
-    const receivers=[{
-        email:email
+        const client=Sib.ApiClient.instance
+        const apiKey=client.authentications['api-key'];
+        apiKey.apiKey=process.env.Sib_Api_Key
+        const transEmailApi=new Sib.TransactionalEmailsApi();
     
-    }]
+        const sender={
+            email:'k.maheshkunta@gmail.com',
+    
+        }
+    
+        const receivers=[{
+            email:email
+        
+        }]
+    
+    transEmailApi.sendTransacEmail({
+        sender,
+        to:receivers,
+        subject:' password reset link since you have forgotten current password',
+        textContent:`<a href='http://localhost:3000/password/resetpassword/{{params.id}}'>click here to reset your password</a>
+        http://localhost:3000/password/resetpassword/{{params.id}}`,
+        params:{
+            id:reqkey.id
+        }
+    })
+    
+    .then(()=>{
+        return res.status(200).json({msg:'password reset link sent to user'})
+    })
+    .catch(console.log)
 
-transEmailApi.sendTransacEmail({
-    sender,
-    to:receivers,
-    subject:' password reset link since you have forgotten current password',
-    textContent:`hello this is ur passord reset link`,
-})
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
 
-.then(console.log)
-.catch(console.log)
+   
 
 }
