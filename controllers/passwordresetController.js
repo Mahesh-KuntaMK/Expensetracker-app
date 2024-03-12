@@ -18,31 +18,21 @@ const path=require('path')
 
     forgotPassword.findOne({where:{id:forgetuserid,isActive:true}})
     .then((data)=>{
-    return res.send(`<html>
-    <body>
-    <div class="signup-container">
-        <h2>Reset Password</h2>
-        <form method="post" action="http://localhost:3000/password/updatepassword/${forgetuserid}">
-          
-          <div class="form-group">
-            <label for="password">Set New Password</label>
-            <input type="password" id="newpassword" name="password" required>
-          </div>
-          <div class="form-group">
-            <label for='confirmpassword'>Confirm Password</label>
-            <input type="password" id="confirmpassword" name="confirmpassword" required>
-          </div>
-          
-          
-          <button style="margin-bottom: 5px;" >Submit</button>
-          <!-- <button id="forgotpassowrdbtn">Forgot Password?</button> -->
-        </form>
-      </div>
-     
-    
-</body>
+      data.update({isActive:false});
+    res.send(`<html>
+    <script>
+        function formsubmitted(e){
+            e.preventDefault();
+            console.log('called')
+        }
+    </script>
+    <form action="/password/updatepassword/${forgetuserid}" method="get">
+        <label for="newpassword">Enter New password</label>
+        <input name="newpassword" type="password" required></input>
+        <button>reset password</button>
+    </form>
 </html>`)
-
+  res.end();
     })
     .catch(err=>{
         console.log(err)
@@ -54,34 +44,34 @@ const path=require('path')
 
 exports.updatePassword=(req,res,next)=>{
 
-    
-   console.log(res.body)
    
-   
-  console.log(req)
-  
-
+    const {newpassword}=req.query;
     const userid=req.params.id;
     console.log(userid);
+    console.log(newpassword);
+    console.log(req.query);
+    const saltrounds=10;
     
     Forgotpassword.findOne({where:{id:userid}})
     .then((response=>{
-        response.update({isActive:false})
+      
        
-      return   User.findByPk(response.userId)
+      return  User.findByPk(response.userId)
 
 
     }))
     .then((user)=>{
-      bcrypt.hash(updatedpassword,saltrounds,async (err,hash)=>{
+      bcrypt.hash(newpassword,saltrounds,async (err,hash)=>{
         if(err){
            throw new Error(err);
         }
              user.update({
                
                password:hash
+
        }).then(()=>{
-           res.status(201).json({msg:'succussfully created user'})
+           res.redirect('/user/login')
+           
        })
        .catch(err=>{
         console.log(err)
