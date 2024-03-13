@@ -92,7 +92,7 @@ exports.userlogin=async (req,res,next)=>{
                 return res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
             }
             else{
-               return res.status(401).json({message:'password doesnt not match'})
+                res.status(401).json({message:'password doesnt not match'})
             }
         })
 }

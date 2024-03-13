@@ -71,3 +71,22 @@ catch(err){
 }
 
 }
+
+exports.expensereport=(req,res,next)=>{
+
+//needs to write a query and send to frontend through api
+
+
+
+
+
+
+
+
+
+res.status(200).json({data:'expense report has been returned'})
+
+
+
+
+}

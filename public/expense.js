@@ -93,7 +93,7 @@ function isPremiumUser(premium){
   if(premium){
            //disable button
            premiumbtn.style.display='none'
-           premiumclass.innerHTML=`Your a premium user<button onclick=leaderboard(event) id='leaderboardbtn' class='btn'>Leaderboard</button>`
+           premiumclass.innerHTML=`Your a premium user<button onclick=leaderboard(event) id='leaderboardbtn' class='btn'>Leaderboard</button><button onclick='expensereport(event)' id='expensereport' class='btn'>Show Report</button>`
            
            
 
@@ -168,13 +168,13 @@ const leaderboardcontainer=document.querySelector('.leaderboard-container');
 leaderboardcontainer.classList.add('block');
 
 
-axios.get('http://localhost:3000/premium/leaderboard',{headers:{'Authorization':token}}).then(res=>{  
+axios.get('http://localhost:3000/premium/leaderboard',{headers:{'Authorization':token}}).then(res=>{
           const listofexpenses=document.getElementById('listofexpenses')
           leadeeboardbtn.style.display='none'
-         
+         console.log(res)
           res.data.forEach(response=>{
             
-                   listofexpenses.innerHTML+=`<li> name:${response.name} total_amount:${response.total_amount}</li>`
+                   listofexpenses.innerHTML+=`<li> name:${response.username} total_amount:${response.totalExpense}</li>`
               
           })
          
@@ -183,4 +183,55 @@ axios.get('http://localhost:3000/premium/leaderboard',{headers:{'Authorization':
   console.log(err)
 })
 
+}
+
+function expensereport(event){
+
+  const token=localStorage.getItem('token')
+
+
+  console.log('hello');
+
+  axios.get('http://localhost:3000/premium/expensereport',{headers:{'Authorization':token}})
+  .then((response=>{
+
+             //let say i got expense report data in array with each having date name category total amount etc
+             //then i need to add to table using js for each method
+
+             if(response.status==200){
+
+
+              //table creation
+              
+             const divtable=document.querySelector('.table-container')
+
+              const table=document.createElement('table');
+
+              table.classList.add('addclasstbalehere');
+
+              
+             table.innerHTML=`<tr>
+             <th>Date</th>
+             <th>amount</th>
+             <th></th>
+           </tr>
+           <tr>
+             <td>${date}</td>
+             <td>${amount}</td>
+             <td></td>
+           </tr>
+           <tr>
+             <td>Centro comercial Moctezuma</td>
+             <td>Francisco Chang</td>
+             <td>Mexico</td>
+           </tr>`
+       divtable.appendChild(table);
+             }
+
+  }))
+  .catch(err=>{
+    console.log(err)
+  })
+
+  console.log('when its clicks report butn i should show a table with date and its expenses of that user')
 }
