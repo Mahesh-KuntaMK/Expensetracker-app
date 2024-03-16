@@ -30,7 +30,9 @@ catch(err){
 }
 const button = document.getElementById("forgotpasswordbtn");
 
-button.addEventListener("click", async(event) => {
+button.addEventListener("click", (event) => {
+    event.preventDefault();
+    console.log('forgotbtn')
 
     window.location.href='/password/forgotpassword'
 })
