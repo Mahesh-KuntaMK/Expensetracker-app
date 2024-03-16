@@ -4,6 +4,8 @@ const Expense=require('../models/expense')
 const User=require('../models/user');
 const { where, Sequelize } = require('sequelize');
 
+require('dotenv').config();
+
 const Razorpay=require('razorpay');
 const sequelize = require('../util/database');
 
@@ -79,8 +81,8 @@ catch(err){
 function uploadtoS3(data,filename){
 
     const BUCKET_Name='expensetracker1313';
-    const IAM_KEY='AKIAXYKJQS6W45LZNHDJ';
-    const IAM_SECRET='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';
+    const IAM_KEY=process.env.awss3accesskeyid;
+    const IAM_SECRET=process.env.awss3secretaccesskey;
 
     const s3bucket= new AWS.S3({
       accessKeyId:IAM_KEY,

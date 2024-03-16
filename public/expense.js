@@ -193,13 +193,16 @@ function expensereport(event){
   console.log('hello');
 
   axios.get('http://localhost:3000/premium/expensereport',{headers:{'Authorization':token}})
-  .then((response=>{
+  .then((response)=>{
 
              //let say i got expense report data in array with each having date name category total amount etc
              //then i need to add to table using js for each method
 
              if(response.status==200){
 
+
+              const fileURL=response.data.fileURL;
+              console.log(fileURL);
 
               //table creation
               
@@ -208,30 +211,66 @@ function expensereport(event){
               const table=document.createElement('table');
 
               table.classList.add('addclasstbalehere');
+              table.innerHTML=`<tr>
+          <th>Date</th>
+          <th>amount</th>
+          <th>category</th>
+          <th>description</th>
+        </tr>`
 
+         response.data.expensereport.forEach(data=>{
+          
+          const newRow = document.createElement('tr');
+
+          // Populate cells with data
+          newRow.innerHTML = `
+              <td>${data.date}</td>
               
-             table.innerHTML=`<tr>
-             <th>Date</th>
-             <th>amount</th>
-             <th></th>
-           </tr>
-           <tr>
-             <td>${date}</td>
-             <td>${amount}</td>
-             <td></td>
-           </tr>
-           <tr>
-             <td>Centro comercial Moctezuma</td>
-             <td>Francisco Chang</td>
-             <td>Mexico</td>
-           </tr>`
-       divtable.appendChild(table);
-             }
+              <td>${data.amount}</td>
+              <td>${data.category}</td>
+              
+              <td>${data.description}</td>
+          `;
 
-  }))
+          // Append the new row to the table body
+          table.appendChild(newRow);
+        // `<tr>
+        //   <td>${data.username}</td>
+        //   <td>${data.amount}</td>
+        //   <td></td>
+        // </tr>`
+         })     
+           
+          
+       divtable.appendChild(table);
+       const downloadreportbtn=document.createElement('button');
+
+       downloadreportbtn.innerText='Download report'
+
+       downloadreportbtn.classList.add('btn');
+
+       downloadreportbtn.setAttribute('id','downloadreportbtn');
+       divtable.appendChild(downloadreportbtn);
+
+       //const downloadreport=document.getElementById('downloadreportbtn');
+
+downloadreportbtn.addEventListener('click',()=>{
+
+  var a = document.createElement("a");
+  a.href = response.data.fileURL;
+  a.download = 'myexpense.csv';
+  a.click();
+
+//  axios.get('http://localhost:3000/premium/downloadreport',{headers:{''})
+
+})
+       
+  }
+})
   .catch(err=>{
     console.log(err)
   })
 
   console.log('when its clicks report butn i should show a table with date and its expenses of that user')
 }
+
