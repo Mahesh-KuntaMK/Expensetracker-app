@@ -8,7 +8,7 @@ const passwordresetController=require('../controllers/passwordresetController');
 
 routes.get('/resetpassword/:id',passwordresetController.resetPassword);
 
-routes.post('/updatepassword/:id',passwordresetController.updatePassword);
+routes.get('/updatepassword/:id',passwordresetController.updatePassword);
 
 
 

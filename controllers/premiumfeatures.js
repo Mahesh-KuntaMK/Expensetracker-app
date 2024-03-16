@@ -2,10 +2,14 @@
 const path=require('path')
 const Expense=require('../models/expense')
 const User=require('../models/user');
-const { where } = require('sequelize');
+const { where, Sequelize } = require('sequelize');
 
 const Razorpay=require('razorpay');
 const sequelize = require('../util/database');
+
+const AWS=require('aws-sdk');
+
+
 
 
 
@@ -72,19 +76,81 @@ catch(err){
 
 }
 
-exports.expensereport=(req,res,next)=>{
+function uploadtoS3(data,filename){
+
+    const BUCKET_Name='expensetracker1313';
+    const IAM_KEY='AKIAXYKJQS6W45LZNHDJ';
+    const IAM_SECRET='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';
+
+    const s3bucket= new AWS.S3({
+      accessKeyId:IAM_KEY,
+      secretAccessKey:IAM_SECRET
+    })
+    // s3bucket.createBucket(()=>{
+    //   var params={
+    //     Bucket:BUCKET_Name,
+    //     Key:filename,
+    //     Body:data,
+    //     ACL:'public-read'
+    //   }
+    // })
+
+       var params={
+        Bucket:BUCKET_Name,
+        Key:filename,
+        Body:data,
+        ACL:'public-read'
+      }
+
+return new  Promise((resolve,reject)=>{
+
+  s3bucket.upload(params,(err,s3response)=>{
+    if(err){
+      reject(err);
+    }else{
+      resolve(s3response.Location);
+    }
+  })
+
+})
+    // s3bucket.upload(params,(err,s3response)=>{
+    //   if(err){
+    //     console.log('smg went wrong',err)
+    //   }else{
+    //     console.log('success',s3response);
+    //   }
+    // })
+
+}
+exports.expensereport=async (req,res,next)=>{
 
 //needs to write a query and send to frontend through api
 
+const expensereport=await req.user.getExpenses();
+
+const stringyfiedexpense=JSON.stringify(expensereport);
+
+const userId=req.user.id;
+
+const filename=`expense${userId}/${new Date()}.txt`;
+
+const fileURL= await uploadtoS3(stringyfiedexpense,filename);
+
+res.status(200).json({fileURL,expensereport});
 
 
 
 
+// req.user.getExpenses()
+// .then((data)=>{
+//   res.status(200).json(data)
+// })
+// .catch(err=>{
+//   res.status(401).json(err)
+// })
 
 
 
-
-res.status(200).json({data:'expense report has been returned'})
 
 
 

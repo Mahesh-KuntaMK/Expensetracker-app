@@ -31,6 +31,7 @@ try{
  //  const t = await sequelize.transaction();
    const {amount,category,description}=req.body;
    
+   const date=new Date();
    if(isstringinvalid(amount)||isstringinvalid(category)||isstringinvalid(description)){
 
     return res.status(400).json({message:'parameters can never be empty'})
@@ -41,7 +42,7 @@ try{
   
   
 
-   const product=await req.user.createExpense({amount,category,description},{ transaction: t })
+   const product=await req.user.createExpense({amount,category,description,date},{ transaction: t })
 
    const total_amount=Number(req.user.totalExpense)+Number(product.amount)
 
