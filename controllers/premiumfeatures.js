@@ -4,14 +4,14 @@ const Expense=require('../models/expense')
 const User=require('../models/user');
 const { where, Sequelize } = require('sequelize');
 
+const Fileurlsdownloaded=require('../models/fileurlsdownloaded');
+
 require('dotenv').config();
 
 const Razorpay=require('razorpay');
 const sequelize = require('../util/database');
 
 const AWS=require('aws-sdk');
-
-
 
 
 
@@ -138,7 +138,16 @@ const filename=`expense${userId}/${new Date()}.txt`;
 
 const fileURL= await uploadtoS3(stringyfiedexpense,filename);
 
-res.status(200).json({fileURL,expensereport});
+console.log(fileURL,'fileurl')
+
+await req.user.createFileurlsdownloaded({
+  urls:fileURL,
+  date:new Date()
+})
+const fileurls=await req.user.getFileurlsdownloadeds();
+
+
+res.status(200).json({fileURL,expensereport,fileurls});
 
 
 

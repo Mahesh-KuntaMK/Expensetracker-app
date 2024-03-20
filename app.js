@@ -15,6 +15,8 @@ const Expense=require('./models/expense.js');
 const User=require('./models/user.js');
 const Order = require('./models/order.js');
 const Forgotpassword=require('./models/forgotpassword.js');
+const Fileurlsdownloaded=require('./models/fileurlsdownloaded');
+
 
 
 //app.use(bodyParser.urlencoded({extended: false}));
@@ -27,6 +29,10 @@ Order.belongsTo(User);
 
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
+
+User.hasMany(Fileurlsdownloaded);
+Fileurlsdownloaded.belongsTo(User);
+
 app.use(express.static(path.join(__dirname,'public')))
 app.use(FrontendRoute);
 app.use('/expense',expanseRoute);

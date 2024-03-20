@@ -66,12 +66,38 @@ catch(err){
 exports.getExpense=async (req,res,next)=>{
    try{
     //console.log(req.user,'usergetexoanse')
-    const expense=await Expense.findAll({where:{userId:req.user.id}});
-      res.json({expense,premium:req.user.isPremiumUser});
-   }
-   catch(err){
-    console.log(err)
-   }
+   const page=+req.query.page||1;
+
+   console.log(page);
+
+const ITEMS_PER_PAGE=2
+const totalitems=await  Expense.count({where:{userId:req.user.id}});
+
+const expense=await Expense.findAll({
+    where:{userId:req.user.id},
+    offset:(page-1)*ITEMS_PER_PAGE,
+    limit:ITEMS_PER_PAGE
+});
+
+console.log(totalitems);
+console.log(totalitems/ITEMS_PER_PAGE)
+const pagedata={
+   
+        currentPage:page,
+        prevPage:page-1,
+        hasnextPage: ITEMS_PER_PAGE*page<totalitems,
+        nextPage:page+1,
+        hasPrevPage:page>1,
+        lastPage:Math.ceil(totalitems/ITEMS_PER_PAGE)
+      
+}
+
+
+  res.json({expense,premium:req.user.isPremiumUser,pagedata});
+}
+catch(err){
+console.log(err)
+}
 
 }
 

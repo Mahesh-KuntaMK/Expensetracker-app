@@ -15,7 +15,7 @@ async function expense(event){
         
 
               console.log(expense);
-              showOnScreen(expense.data)
+              showexpenseonUI(expense.data)
         }
     
     catch(err){
@@ -28,36 +28,145 @@ window.addEventListener('DOMContentLoaded',async ()=>{
     try{
         const token=localStorage.getItem('token');
         console.log(token)
-       const product=await axios.get('http://localhost:3000/expense/getexpense',{headers:{"Authorization":token}})
+
+     
+
+        const  objUrlParams=new URLSearchParams(window.location.search);
+
+        const  page=objUrlParams.get('page')||1;
+
+        console.log('current page',page)
+
+       const product=await axios.get(`http://localhost:3000/expense/getexpense?page=${page}`,{headers:{"Authorization":token}})
            
              console.log(product)
              isPremiumUser(product.data.premium);
-             for(let i=0;i<product.data.expense.length;i++){
-                 showOnScreen(product.data.expense[i])
-             }
+            
+             showOnScreen(product.data.expense);
+             
+
+             pagination(product.data.pagedata);
             }
             catch(err){
                 console.log('err has been in get expense block' ,err)
                 document.body.innerHTML+=`<div style="color:red;">${err}</div>`
             }     
             })
-          
+
+
+const paginationcontainer=document.querySelector('.pagination');
+function pagination({
+  currentPage,
+  prevPage,
+  hasnextPage ,
+  nextPage,
+  hasPrevPage,
+ lastPage
+}){
+
  
+console.log(lastPage,hasPrevPage,hasnextPage,currentPage,prevPage,nextPage)
+ 
+
+     //previouspagebtn
+
+     paginationcontainer.innerHTML='';
+
+     if(hasPrevPage){
+       const btn2=document.createElement('button');
+       btn2.innerHTML=prevPage;
+       btn2.addEventListener('click',()=>getproducts(prevPage));
+       paginationcontainer.appendChild(btn2)
+
+     }
+
+     const btn1=document.createElement('button');
+       btn1.innerHTML=currentPage;
+       btn1.addEventListener('click',()=>getproducts(currentPage));
+       btn1.classList.add('active');
+       paginationcontainer.appendChild(btn1)
+
+    if(hasnextPage){
+      const btn3=document.createElement('button');
+       btn3.innerHTML=nextPage;
+       btn3.addEventListener('click',()=>getproducts(nextPage));
+       paginationcontainer.appendChild(btn3)
+    }
+
+     //presentpagebtn
+
+
+     //nextpagebtn
+}            
+ 
+
+function getproducts(page){
+  const token=localStorage.getItem('token');
+
+  axios.get(`http://localhost:3000/expense/getexpense?page=${page}`,{headers:{"Authorization":token}})
+  .then(response=>{
+
+   
+      showOnScreen(response.data.expense)
+
+  
+
+//showOnScreen(response.data.expense);
+
+    console.log(response.data.pagedata)
+
+    pagination(response.data.pagedata)
+  })
+ .catch(err=>{
+  console.log(err)
+
+ })
+  
+}
+function showexpenseonUI(product){
+
+  const listofitems=document.querySelector('.listofitems')
+  const expensecard=document.createElement('div')
+    
+  expensecard.classList.add('card');
+  expensecard.setAttribute('id',`${product.id}`)
+  expensecard.innerHTML=`
+  <div>amount:${product.amount}</div>
+  <div>category:${product.category}</div>
+  <div>description:${product.description}</div>
+  <button class='btn' onClick=deleteProduct(${product.id})>Delete</button>`
+  listofitems.appendChild(expensecard)
+
+}
   
 function showOnScreen(product){
-   console.log(product);
-     const parentNode=document.querySelector('.listofitems')
-   console.log(parentNode);
-     const expensecard=document.createElement('div')
-     expensecard.classList.add('card');
-     expensecard.setAttribute('id',`${product.id}`)
-     expensecard.innerHTML=`
-     <div>amount:${product.amount}</div>
-     <div>category:${product.category}</div>
-     <div>description:${product.description}</div>
-     <button class='btn' onClick=deleteProduct(${product.id})>Delete</button>`
-     parentNode.appendChild(expensecard)
 
+
+  console.log(product);
+
+
+const listofitems=document.querySelector('.listofitems')
+
+listofitems.innerHTML='';
+
+
+  product.forEach(product=>{
+
+  const expensecard=document.createElement('div')
+    
+  expensecard.classList.add('card');
+  expensecard.setAttribute('id',`${product.id}`)
+  expensecard.innerHTML=`
+  <div>amount:${product.amount}</div>
+  <div>category:${product.category}</div>
+  <div>description:${product.description}</div>
+  <button class='btn' onClick=deleteProduct(${product.id})>Delete</button>`
+  listofitems.appendChild(expensecard)
+
+})
+
+
+  
 }
    
 async function deleteProduct(id){
@@ -187,7 +296,7 @@ axios.get('http://localhost:3000/premium/leaderboard',{headers:{'Authorization':
 
 function expensereport(event){
 
-  const token=localStorage.getItem('token')
+  const token=localStorage.getItem('token');
 
 
   console.log('hello');
@@ -200,8 +309,10 @@ function expensereport(event){
 
              if(response.status==200){
 
+              console.log(response.data.fileURL)
 
-              const fileURL=response.data.fileURL;
+
+              const fileURL=response.data.fileurls;
               console.log(fileURL);
 
               //table creation
@@ -254,12 +365,24 @@ function expensereport(event){
 
        //const downloadreport=document.getElementById('downloadreportbtn');
 
-downloadreportbtn.addEventListener('click',()=>{
+downloadreportbtn.addEventListener('click',async()=>{
 
-  var a = document.createElement("a");
-  a.href = response.data.fileURL;
-  a.download = 'myexpense.csv';
-  a.click();
+  //date    on expense click here to download
+
+  //
+  const fileurls_container=document.querySelector('.fileurls-container')
+
+  console.log(fileURL);
+  fileURL.forEach(data=>{
+    var li=document.createElement('li')
+    var a = document.createElement("a");
+    a.href = data.urls;
+    a.innerHTML=`${data.urls}`
+    li.appendChild(a)
+    fileurls_container.appendChild(li)
+  })
+  
+ 
 
 //  axios.get('http://localhost:3000/premium/downloadreport',{headers:{''})
 

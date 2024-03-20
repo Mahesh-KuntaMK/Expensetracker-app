@@ -88,7 +88,7 @@ exports.userlogin=async (req,res,next)=>{
   
         bcrypt.compare(password,user.password,(err,result)=>{
             if(result){
-                console.log('login','pasword not match')
+                console.log('login','pasword  match')
                 return res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
             }
             else{
