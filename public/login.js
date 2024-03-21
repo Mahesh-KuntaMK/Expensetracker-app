@@ -16,7 +16,9 @@ try{
    if(response.status===201){
          alert('login successful');
          console.log('yep id excuted fter alert')
+         localStorage.setItem('page',1);
          localStorage.setItem('token',response.data.token)
+         localStorage.setItem('noofrows',5)
          window.location.href='/expense'
 
    }

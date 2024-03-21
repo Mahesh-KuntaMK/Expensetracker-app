@@ -5,6 +5,8 @@ async function expense(event){
    event.preventDefault();
    console.log('expense.js')
    const token=localStorage.getItem('token');
+
+   
    console.log(token,'addtoken')
         let product={
             amount:document.getElementById('amount').value,
@@ -28,23 +30,29 @@ window.addEventListener('DOMContentLoaded',async ()=>{
     try{
         const token=localStorage.getItem('token');
         console.log(token)
-
+        
      
 
         const  objUrlParams=new URLSearchParams(window.location.search);
 
-        const  page=objUrlParams.get('page')||1;
+        const  page=localStorage.getItem('page');
+
+        const noofrows=localStorage.getItem('noofrows')
+
+        console.log(noofrows)
+
+        console.log(page);
 
         console.log('current page',page)
 
-       const product=await axios.get(`http://localhost:3000/expense/getexpense?page=${page}`,{headers:{"Authorization":token}})
+       const product=await axios.get(`http://localhost:3000/expense/getexpense?page=${page}&noofrows=${noofrows}`,{headers:{"Authorization":token}})
            
-             console.log(product)
-             isPremiumUser(product.data.premium);
+             console.log(product);
             
-             showOnScreen(product.data.expense);
+            isPremiumUser(product.data.premium);
+            
+            showOnScreen(product.data.expense);
              
-
              pagination(product.data.pagedata);
             }
             catch(err){
@@ -72,8 +80,11 @@ console.log(lastPage,hasPrevPage,hasnextPage,currentPage,prevPage,nextPage)
 
      paginationcontainer.innerHTML='';
 
+     //choose number of rows:
+
      if(hasPrevPage){
        const btn2=document.createElement('button');
+      
        btn2.innerHTML=prevPage;
        btn2.addEventListener('click',()=>getproducts(prevPage));
        paginationcontainer.appendChild(btn2)
@@ -85,6 +96,12 @@ console.log(lastPage,hasPrevPage,hasnextPage,currentPage,prevPage,nextPage)
        btn1.addEventListener('click',()=>getproducts(currentPage));
        btn1.classList.add('active');
        paginationcontainer.appendChild(btn1)
+       localStorage.setItem('page',`${currentPage}`)
+
+    
+
+   
+    
 
     if(hasnextPage){
       const btn3=document.createElement('button');
@@ -99,6 +116,19 @@ console.log(lastPage,hasPrevPage,hasnextPage,currentPage,prevPage,nextPage)
      //nextpagebtn
 }            
  
+const pageSizeSelect = document.getElementById('pageSizeSelect');
+
+console.log(pageSizeSelect);
+
+pageSizeSelect.addEventListener('change', ()=>{
+
+        console.log(pageSizeSelect.value)
+
+         localStorage.setItem('noofrows',pageSizeSelect.value)
+
+         window.location.href = window.location.href;
+
+});
 
 function getproducts(page){
   const token=localStorage.getItem('token');

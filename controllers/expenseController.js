@@ -70,7 +70,12 @@ exports.getExpense=async (req,res,next)=>{
 
    console.log(page);
 
-const ITEMS_PER_PAGE=2
+   const noofrows=req.query.noofrows;
+
+   console.log(req.query);
+
+
+const ITEMS_PER_PAGE=Number(noofrows);
 const totalitems=await  Expense.count({where:{userId:req.user.id}});
 
 const expense=await Expense.findAll({
