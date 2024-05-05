@@ -1,6 +1,7 @@
 const express=require('express');
 const path=require('path');
 const bodyParser=require('body-parser')
+const fs=require('fs')
 require('dotenv').config();
 const app=express();
 const cors = require('cors');
@@ -16,6 +17,14 @@ const User=require('./models/user.js');
 const Order = require('./models/order.js');
 const Forgotpassword=require('./models/forgotpassword.js');
 const Fileurlsdownloaded=require('./models/fileurlsdownloaded');
+
+const helmet=require('helmet');
+
+const compression=require('compression');
+
+const morgan=require('morgan');
+
+
 
 
 
@@ -39,6 +48,16 @@ app.use('/expense',expanseRoute);
 app.use('/purchase',premiumRoute);
 app.use('/premium',premiumfeatureRoute);
 app.use('/password',passwordresetRoute);
+
+// const accessLogstream=fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'})
+
+
+// app.use(helmet());
+
+app.use(compression());
+
+// app.use(morgan('combined',{stream:accessLogstream}));
+
 sequelize.sync()
 .then(()=>{
     app.listen(3000)
