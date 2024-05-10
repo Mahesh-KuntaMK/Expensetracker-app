@@ -4,7 +4,7 @@ async function forgotpassword(event){
 
 const email=event.target.email.value
 
-console.log(email);
+//console.log(email);
  const response=await axios.post('http://localhost:3000/password/forgotpassword',{email})
 
 if(response.status==200){

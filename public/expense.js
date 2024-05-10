@@ -143,7 +143,7 @@ function getproducts(page){
 
 //showOnScreen(response.data.expense);
 
-    console.log(response.data.pagedata)
+    //console.log(response.data.pagedata)
 
     pagination(response.data.pagedata)
   })
@@ -172,7 +172,7 @@ function showexpenseonUI(product){
 function showOnScreen(product){
 
 
-  console.log(product);
+  //console.log(product);
 
 
 const listofitems=document.querySelector('.listofitems')
@@ -201,17 +201,17 @@ listofitems.innerHTML='';
    
 async function deleteProduct(id){
    try{
-     console.log(id);
+     //console.log(id);
      const token=localStorage.getItem('token');
    const product=await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`,{headers:{"Authorization":token}})
-         console.log(product)
-         console.log(product.id)
+         //console.log(product)
+         //console.log(product.id)
          removeFromScreen(product.data.id);
-         console.log('product deleted');
+         //console.log('product deleted');
    }
      catch(err){
         document.body.innerHTML+=`<div style="color:red;">${err}</div>`
-                 console.log("there is a error in delete product",err)
+                // console.log("there is a error in delete product",err)
  }
 }
 
@@ -247,11 +247,11 @@ function isPremiumUser(premium){
 document.getElementById('rzpbtn').onclick=async (e)=>{
       
     const token=localStorage.getItem('token');
-    console.log('raxorpay')
+    //console.log('raxorpay')
 
   const response=await axios.get('http://localhost:3000/purchase/gopremiumuser',{headers:{'Authorization':token}})
 
-  console.log(response.data.order.id)
+ // console.log(response.data.order.id)
    
           var options={
             "key":response.data.key_id,
@@ -279,7 +279,7 @@ document.getElementById('rzpbtn').onclick=async (e)=>{
           e.preventDefault();
        
           rzp1.on('payment.failed',async function (response){ 
-            console.log(response);
+            //console.log(response);
             await axios.post('http://localhost:3000/purchase/updatepremiumuser',{
                 order_id:options.orderid,
                 payment_id:response.razorpay_payment_id
@@ -296,7 +296,7 @@ document.getElementById('rzpbtn').onclick=async (e)=>{
 
 
 function leaderboard(event){
-  console.log('leadeeboard')
+ // console.log('leadeeboard')
 
   const token=localStorage.getItem('token');
 
@@ -310,7 +310,7 @@ leaderboardcontainer.classList.add('block');
 axios.get('http://localhost:3000/premium/leaderboard',{headers:{'Authorization':token}}).then(res=>{
           const listofexpenses=document.getElementById('listofexpenses')
           leadeeboardbtn.style.display='none'
-         console.log(res)
+        // console.log(res)
           res.data.forEach(response=>{
             
                    listofexpenses.innerHTML+=`<li> name:${response.username} total_amount:${response.totalExpense}</li>`
@@ -329,7 +329,7 @@ function expensereport(event){
   const token=localStorage.getItem('token');
 
 
-  console.log('hello');
+  //console.log('hello');
 
   axios.get('http://localhost:3000/premium/expensereport',{headers:{'Authorization':token}})
   .then((response)=>{
@@ -343,7 +343,7 @@ function expensereport(event){
 
 
               const fileURL=response.data.fileurls;
-              console.log(fileURL);
+              //console.log(fileURL);
 
               //table creation
               
@@ -402,7 +402,7 @@ downloadreportbtn.addEventListener('click',async()=>{
   //
   const fileurls_container=document.querySelector('.fileurls-container')
 
-  console.log(fileURL);
+  //console.log(fileURL);
   fileURL.forEach(data=>{
     var li=document.createElement('li')
     var a = document.createElement("a");
@@ -424,6 +424,6 @@ downloadreportbtn.addEventListener('click',async()=>{
     console.log(err)
   })
 
-  console.log('when its clicks report butn i should show a table with date and its expenses of that user')
+ // console.log('when its clicks report butn i should show a table with date and its expenses of that user')
 }
 

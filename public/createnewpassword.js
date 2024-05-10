@@ -8,7 +8,7 @@ function createnewpassword(event){
     axios.post('http://localhost:3000/password/updatepassword')
     .then((response)=>{
 
-        console.log(response.data);
+        //console.log(response.data);
 
     })
     .catch(err=>{

@@ -12,3 +12,6 @@ routes.post('/updatepremiumuser',authController.authentication,premiumController
 
 
 module.exports=routes
+
+
+

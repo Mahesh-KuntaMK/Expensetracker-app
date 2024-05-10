@@ -32,7 +32,7 @@ try{
    const username=req.body.username
    const email=req.body.email
    const password=req.body.password
-   console.log(username,email,password)
+   //console.log(username,email,password)
    if(isstringinvalid(username)||isstringinvalid(email)||isstringinvalid(password)){
 
      return res.status(400).json({err:"paratemers are missing"})
@@ -55,15 +55,14 @@ try{
 })
   //res.sendFile(path.join(__dirname,'../','views','loginpage.html'))
   
- 
    })
    
    
 }
 
     catch(err){
-        console.log('err')
-        //console.log(err)
+        //console.log('err')
+          //console.log(err)
         res.status(500).json({err:err,msg:'email is already registered'})
     }
           
