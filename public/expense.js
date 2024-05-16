@@ -13,7 +13,7 @@ async function expense(event){
             description:document.getElementById('description').value,
             category:document.getElementById('category').value
          }
-     const expense=await axios.post('http://localhost:3000/expense/addexpense',product,{headers:{"Authorization":token}})
+     const expense=await axios.post('http://3.82.59.114:3000/expense/addexpense',product,{headers:{"Authorization":token}})
         
 
               console.log(expense);
@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 
         console.log('current page',page)
 
-       const product=await axios.get(`http://localhost:3000/expense/getexpense?page=${page}&noofrows=${noofrows}`,{headers:{"Authorization":token}})
+       const product=await axios.get(`http://3.82.59.114:3000/expense/getexpense?page=${page}&noofrows=${noofrows}`,{headers:{"Authorization":token}})
            
              console.log(product);
             
@@ -133,7 +133,7 @@ pageSizeSelect.addEventListener('change', ()=>{
 function getproducts(page){
   const token=localStorage.getItem('token');
 
-  axios.get(`http://localhost:3000/expense/getexpense?page=${page}`,{headers:{"Authorization":token}})
+  axios.get(`http://3.82.59.114:3000/expense/getexpense?page=${page}`,{headers:{"Authorization":token}})
   .then(response=>{
 
    
@@ -203,7 +203,7 @@ async function deleteProduct(id){
    try{
      //console.log(id);
      const token=localStorage.getItem('token');
-   const product=await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`,{headers:{"Authorization":token}})
+   const product=await axios.delete(`http://3.82.59.114:3000/expense/delete-expense/${id}`,{headers:{"Authorization":token}})
          //console.log(product)
          //console.log(product.id)
          removeFromScreen(product.data.id);
@@ -249,7 +249,7 @@ document.getElementById('rzpbtn').onclick=async (e)=>{
     const token=localStorage.getItem('token');
     //console.log('raxorpay')
 
-  const response=await axios.get('http://localhost:3000/purchase/gopremiumuser',{headers:{'Authorization':token}})
+  const response=await axios.get('http://3.82.59.114:3000/purchase/gopremiumuser',{headers:{'Authorization':token}})
 
  // console.log(response.data.order.id)
    
@@ -258,7 +258,7 @@ document.getElementById('rzpbtn').onclick=async (e)=>{
             'amount':response.data.order.amount,
             "orderid":response.data.order.id,
             "handler":async function(response){
-                await axios.post('http://localhost:3000/purchase/updatepremiumuser',{
+                await axios.post('http://3.82.59.114:3000/purchase/updatepremiumuser',{
                         order_id:options.orderid,
                         payment_id:response.razorpay_payment_id
                 },{
@@ -280,7 +280,7 @@ document.getElementById('rzpbtn').onclick=async (e)=>{
        
           rzp1.on('payment.failed',async function (response){ 
             //console.log(response);
-            await axios.post('http://localhost:3000/purchase/updatepremiumuser',{
+            await axios.post('http://3.82.59.114:3000/purchase/updatepremiumuser',{
                 order_id:options.orderid,
                 payment_id:response.razorpay_payment_id
         },{
@@ -307,7 +307,7 @@ const leaderboardcontainer=document.querySelector('.leaderboard-container');
 leaderboardcontainer.classList.add('block');
 
 
-axios.get('http://localhost:3000/premium/leaderboard',{headers:{'Authorization':token}}).then(res=>{
+axios.get('http://3.82.59.114:3000/premium/leaderboard',{headers:{'Authorization':token}}).then(res=>{
           const listofexpenses=document.getElementById('listofexpenses')
           leadeeboardbtn.style.display='none'
         // console.log(res)
@@ -331,7 +331,7 @@ function expensereport(event){
 
   //console.log('hello');
 
-  axios.get('http://localhost:3000/premium/expensereport',{headers:{'Authorization':token}})
+  axios.get('http://3.82.59.114:3000/premium/expensereport',{headers:{'Authorization':token}})
   .then((response)=>{
 
              //let say i got expense report data in array with each having date name category total amount etc
@@ -414,7 +414,7 @@ downloadreportbtn.addEventListener('click',async()=>{
   
  
 
-//  axios.get('http://localhost:3000/premium/downloadreport',{headers:{''})
+//  axios.get('http://3.82.59.114:3000/premium/downloadreport',{headers:{''})
 
 })
        
