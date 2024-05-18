@@ -3,7 +3,7 @@
 async function expense(event){
     try{
    event.preventDefault();
-   console.log('expense.js')
+  // console.log('expense.js')
    const token=localStorage.getItem('token');
 
    
@@ -16,7 +16,7 @@ async function expense(event){
      const expense=await axios.post('http://3.82.59.114:3000/expense/addexpense',product,{headers:{"Authorization":token}})
         
 
-              console.log(expense);
+             // console.log(expense);
               showexpenseonUI(expense.data)
         }
     
@@ -29,7 +29,7 @@ async function expense(event){
 window.addEventListener('DOMContentLoaded',async ()=>{
     try{
         const token=localStorage.getItem('token');
-        console.log(token)
+        //console.log(token)
         
      
 
@@ -39,15 +39,15 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 
         const noofrows=localStorage.getItem('noofrows')
 
-        console.log(noofrows)
+        //console.log(noofrows)
 
-        console.log(page);
+        //console.log(page);
 
-        console.log('current page',page)
+        //console.log('current page',page)
 
        const product=await axios.get(`http://3.82.59.114:3000/expense/getexpense?page=${page}&noofrows=${noofrows}`,{headers:{"Authorization":token}})
            
-             console.log(product);
+             //console.log(product);
             
             isPremiumUser(product.data.premium);
             
@@ -118,11 +118,11 @@ console.log(lastPage,hasPrevPage,hasnextPage,currentPage,prevPage,nextPage)
  
 const pageSizeSelect = document.getElementById('pageSizeSelect');
 
-console.log(pageSizeSelect);
+//console.log(pageSizeSelect);
 
 pageSizeSelect.addEventListener('change', ()=>{
 
-        console.log(pageSizeSelect.value)
+       // console.log(pageSizeSelect.value)
 
          localStorage.setItem('noofrows',pageSizeSelect.value)
 
@@ -264,7 +264,7 @@ document.getElementById('rzpbtn').onclick=async (e)=>{
                 },{
                     headers:{'Authorization':token}
                 }).then((response)=>{
-                    console.log(response);
+                    //console.log(response);
                     //let make button disable and and he is premium user
 
                     
@@ -339,7 +339,7 @@ function expensereport(event){
 
              if(response.status==200){
 
-              console.log(response.data.fileURL)
+             // console.log(response.data.fileURL)
 
 
               const fileURL=response.data.fileurls;
