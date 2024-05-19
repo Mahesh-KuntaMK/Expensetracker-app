@@ -65,3 +65,8 @@ sequelize.sync()
 .catch(err=>{
     console.log('err',err)
 })
+
+///jenkins had been added lets see ot will chnage automitvaty
+
+
+//yyy
