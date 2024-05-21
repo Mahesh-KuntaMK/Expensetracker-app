@@ -67,7 +67,7 @@ sequelize.sync()
 })
 
 // hello is it gng to work or not
-
+//now it has changes now i added scm pol
 
 ///jenkins had been added lets see ot will chnage automitvaty
 
