@@ -66,7 +66,10 @@ sequelize.sync()
     console.log('err',err)
 })
 
+// hello is it gng to work or not
+
+
 ///jenkins had been added lets see ot will chnage automitvaty
 
 
-//yyy
+//yyy now one more time creating cicd deplyment brnahc ro check jenkin
