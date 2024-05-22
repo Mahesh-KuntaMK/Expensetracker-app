@@ -5,7 +5,7 @@ async function forgotpassword(event){
 const email=event.target.email.value
 
 //console.log(email);
- const response=await axios.post('http://3.82.59.114:3000/password/forgotpassword',{email})
+ const response=await axios.post('http://3.82.4.129:3000/password/forgotpassword',{email})
 
 if(response.status==200){
     alert('reset link was sent successfully')
