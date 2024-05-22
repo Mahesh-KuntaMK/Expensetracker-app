@@ -145,8 +145,8 @@ exports.resetPassword=(req,res,next)=>{
         sender,
         to:receivers,
         subject:' password reset link since you have forgotten current password',
-        textContent:`<a href='http://3.82.59.114:3000/password/resetpassword/{{params.id}}'>click here to reset your password</a>
-        http://3.82.59.114:3000/password/resetpassword/{{params.id}}`,
+        textContent:`<a href='http://3.82.4.129:3000/password/resetpassword/{{params.id}}'>click here to reset your password</a>
+        http://3.82.4.129:3000/password/resetpassword/{{params.id}}`,
         params:{
             id:reqkey.id
         }
