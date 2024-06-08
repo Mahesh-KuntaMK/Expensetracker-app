@@ -11,7 +11,8 @@ async function signup(event){
  const  signupdata=await axios.post('http://3.82.4.129:3000/user/signup',userdata)
 
      if(signupdata.status===201){
-        window.location.href='/user/loginpage'
+        alert('your account created succussfully login this credentials')
+        window.location.href='/'
      }
      else{
         //console.log(signupdata);
@@ -24,7 +25,16 @@ async function signup(event){
         document.body.innerHTML+=`<div style="color:red;">${err.msg}</div>`
     }
 
+
 }
+const button = document.getElementById("home-loginpage-btn");
+
+button.addEventListener("click", (event) => {
+    event.preventDefault();
+    //console.log('forgotbtn')
+
+    window.location.href='/'
+})
 
 
 // const page=+req.query.page||1;

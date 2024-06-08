@@ -1,44 +1,9 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up Form</title>
-  <link rel="stylesheet" href="/style.css">
-</head>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<body>
-  <div class="signup-container">
-    <h2>Sign Up</h2>
-    <form onsubmit="signup(event)">
-      <div class="form-group">
-        <label for="username">Name:</label>
-        <input type="text" id="username" name="username" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-      </div>
-      <button >Sign Up</button>
-    </form>
-    <div class="form-group">
-      <a href="/user/login">Login here</a>
-    </div>
-  </div>
-</body>
-<script src="/signup.js"></script>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
+    <title>Expense Tracker-signup</title>
     
 </head>
 <style>
@@ -49,7 +14,7 @@
       display: flex;
       flex-direction: row;
       
-      
+      height:100vh;
       
     }
     .home .about-page{
@@ -60,7 +25,6 @@
          
     margin-top: 200px;
     margin-left: 60px;
-    margin-right: 20px;
 }
         
         
@@ -92,7 +56,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 100px;
        
     }
     .home .login-page-container .login-page {
@@ -130,8 +93,7 @@
     .home .login-page form a{
         text-align: center;
     }
-    
-@media  screen and (max-width:900px) {
+    @media  screen and (max-width:900px) {
 
   
 .home .about-page, .home .login-page-container{
@@ -143,6 +105,7 @@
     gap: 3rem;
 }
 }
+
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -161,14 +124,15 @@
           
           <div class="login-page">
 
-            <form onsubmit="login(event)">
-                <h3>Login here</h3>
+            <form onsubmit="signup(event)">
+                <h3>SIGN UP</h3>
+                <input type="text" name="username" id="username" placeholder="Username">
                 <input type="text" name="email" id="email" placeholder="Email">
                 <input type="password" name="password" id="password" placeholder="password">
-                <button id="login-btn" type="submit">Login</button>
+                <button id="login-btn" type="submit">Sign Up</button>
                 <a href="/password/forgotpassword">forgetpassowrd?</a>
                 
-                <button id="create-signup-btn">create new account</button>
+                <button id="home-loginpage-btn" >Login-here</button>
                 
             </form>
 
@@ -179,6 +143,6 @@
 
 
     </div>
-    <script src="/login.js"></script>
+    <script src="/signup.js"></script>
 </body>
 </html>

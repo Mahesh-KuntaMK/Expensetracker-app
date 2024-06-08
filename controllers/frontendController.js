@@ -24,6 +24,9 @@ function generateAccesstoken(id,email){
 exports.signup=(req,res,next)=>{
     res.sendFile(path.join(__dirname,'../','views','signup.html'))
 }
+exports.createaccount=(req,res,next)=>{
+    res.sendFile(path.join(__dirname,'../','views','createpage.html'));
+}
 exports.login=(req,res,next)=>{
      res.sendFile(path.join(__dirname,'../','views','loginpage.html'))
 }
@@ -32,7 +35,7 @@ try{
    const username=req.body.username
    const email=req.body.email
    const password=req.body.password
-   //console.log(username,email,password)
+   console.log(username,email,password)
    if(isstringinvalid(username)||isstringinvalid(email)||isstringinvalid(password)){
 
      return res.status(400).json({err:"paratemers are missing"})
