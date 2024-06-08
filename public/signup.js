@@ -8,7 +8,7 @@ async function signup(event){
         password:event.target.password.value
     }
     //console.log(userdata);
- const  signupdata=await axios.post('http://3.82.4.129:3000/user/signup',userdata)
+ const  signupdata=await axios.post('http://34.207.229.200:3000/user/signup',userdata)
 
      if(signupdata.status===201){
         alert('your account created succussfully login this credentials')

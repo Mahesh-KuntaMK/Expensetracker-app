@@ -5,7 +5,7 @@ function createnewpassword(event){
 
     console.log(event.target.password.value);
     
-    axios.post('http://3.82.4.129:3000/password/updatepassword')
+    axios.post('http://34.207.229.200:3000/password/updatepassword')
     .then((response)=>{
 
         //console.log(response.data);

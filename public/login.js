@@ -11,7 +11,7 @@ try{
     }
 
     //console.log(userdata);
-    const response =await axios.post('http://3.82.4.129:3000/user/login',userdata)
+    const response =await axios.post('http://34.207.229.200:3000/user/login',userdata)
 
    if(response.status===201){
          alert('login successful');
