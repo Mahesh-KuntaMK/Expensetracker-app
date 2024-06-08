@@ -30,11 +30,11 @@ catch(err){
     document.body.innerHTML+=`<div style="color:red;">${err}</div>`
 }
 }
-const button = document.getElementById("forgotpasswordbtn");
+const button = document.getElementById("create-signup-btn");
 
 button.addEventListener("click", (event) => {
     event.preventDefault();
     //console.log('forgotbtn')
 
-    window.location.href='/password/forgotpassword'
+    window.location.href='/user/createaccount'
 })
