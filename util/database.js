@@ -11,4 +11,5 @@ const sequelize=new Sequelize('expense-project','root','Mahesh@1313',{
     timezone: '+05:30'
 })
 
+
 module.exports = sequelize;
