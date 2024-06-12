@@ -14,7 +14,10 @@ try{
     }
 
     //console.log(userdata);
-    const response =await axios.post('http://54.89.10.176:3000/user/login',userdata)
+    const response =await axios.post('http://localhost:3000/user/login',userdata)
+
+    console.log(response);
+    console.log(response.data)
 
    if(response.status===201){
          alert('login successful');
@@ -26,25 +29,51 @@ try{
 
    }
    else{
-       throw  new Error(err);
+    
+    console.log('hello')
+    console.log(response.status)
+    //  errorpage(response.status);
    }
 
 }
 catch(err){
+ 
+    errorpage(err.response.status);
 
-    document.body.innerHTML+=`<div style="color:red;">${err}</div>`
+    
 
 }
 
-const button = document.getElementById("create-signup-btn");
-   
-    console.log(button); 
 
-    button.addEventListener("click", (event) => {
-        event.preventDefault();
-      
-        console.log('btn not working')
+}
+function createaccount(event){
+    event.preventDefault();
+    
+    
     
         window.location.href='/user/createaccount'
-    })
+    
+
+
+}
+
+function errorpage(statuscode){
+      
+
+    const error_page=document.getElementById('error-page-container');
+    console.log(error_page)
+
+    error_page.style.display='block';
+    const error_h4=document.getElementById('error');
+    error_h4.innerHTML="";
+    if(statuscode==401){
+    error_h4.innerHTML='Password does not match try again :)'
+    }
+    else if(statuscode==400){
+         error_h4.innerHTML='The parameters are not entered correctly (:';
+    }
+    else {
+         error_h4.innerHTML='The Email does not exit!'
+
+    }
 }

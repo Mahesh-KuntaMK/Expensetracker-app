@@ -42,9 +42,21 @@
     
 </head>
 <style>
+
     body{
         background-color: aliceblue;
     }
+    .home .about-page  .error-page-container{
+        display: none;
+    }
+    .home .about-page  .error-page-container h4{
+    
+    color: red;
+    font-size: 1.5rem;
+    font-weight: 500;
+    text-align: center;
+    font-style: italic;
+}
     .home{
       display: flex;
       flex-direction: row;
@@ -155,6 +167,12 @@
                 <p>Expense tracking gives you an easy way to record and understand all of your spendings and review it in a timely manner.
                      Tracking your spending helps you identify any expenses that might be unnecessary or excessive.</p>
                  <span>Join Now and Have Fun</span>
+                 <div class="error-page-container" id="error-page-container">
+                     
+                  <h4 id="error"></h4>
+                  
+
+              </div>
           </div>
 <div class="login-page-container">
 
@@ -166,13 +184,14 @@
                 <input type="text"required name="email" id="email" placeholder="Email">
                 <input type="password"required name="password" id="password" placeholder="password">
                 <button id="login-btn" type="submit">Login</button>
+               
                 <a href="/password/forgotpassword">forgetpassword?</a>
                 
                
                 
             </form>
             <br>
-            <button style="width:100%" id="create-signup-btn">create new account</button>
+            <button style="width:100%" onclick="createaccount(event)" id="create-signup-btn">create new account</button>
 
           </div>
               

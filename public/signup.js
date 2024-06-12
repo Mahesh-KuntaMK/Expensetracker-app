@@ -14,27 +14,37 @@ async function signup(event){
         alert('your account created succussfully login this credentials')
         window.location.href='/'
      }
-     else{
-        //console.log(signupdata);
-
-        throw new Error(err);;
-     }
+    
+     else
+       throw new Error(err)
+        
+     
     }
     catch(err){
-        
-        document.body.innerHTML+=`<div style="color:red;">${err.msg}</div>`
+       errorpage(err)
     }
 
 
 
-const button = document.getElementById("home-loginpage-btn");
 
-button.addEventListener("click", (event) => {
+}
+function loginhere(event){
     event.preventDefault();
-    //console.log('forgotbtn')
+    
+    
+    
+        window.location.href='/'
+  
 
-    window.location.href='/'
-})
+}
+function errorpage(err){
+    const error_page=document.getElementById('error-page-container');
+    //console.log(error_page)
+
+    error_page.style.display='block';
+        const error_h4=document.getElementById('error');
+    error_h4.innerHTML="";
+    error_h4.innerHTML='The entered email already exited'
 }
 
 

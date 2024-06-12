@@ -83,24 +83,24 @@ exports.userlogin=async (req,res,next)=>{
 
    const user =await User.findOne({where:{email:email}})
 
-   console.log(password,'password entered in login page')
+  // console.log(password,'password entered in login page')
 
-   console.log(user.password,'password entered array')
+   //console.log(user.password,'password entered array')
 
   
         bcrypt.compare(password,user.password,(err,result)=>{
             if(result){
                 console.log('login','pasword  match')
-                return res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
+                 return res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
             }
             else{
-                return res.status(401).json({message:'password doesnt not match'})
+                 return res.status(401).json({message:'password doesnt not match'})
             }
         })
 }
 catch(err){
-    console.log(err);
-    return  res.status(500).json({err:err})
+    //console.log(err);
+     return res.status(500).json({err:err})
     
 }
 }
