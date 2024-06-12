@@ -1,17 +1,20 @@
+
+
+
 async function login(event){
-
-
 try{
 
     event.preventDefault()
     //console.log('hello')
+
+    
     const userdata={
         email:event.target.email.value,
         password:event.target.password.value
     }
 
     //console.log(userdata);
-    const response =await axios.post('http://34.207.229.200:3000/user/login',userdata)
+    const response =await axios.post('http://localhost:3000/user/login',userdata)
 
    if(response.status===201){
          alert('login successful');
@@ -23,18 +26,25 @@ try{
 
    }
    else{
-    throw  new Error(err)
+       throw  new Error(err);
    }
+
 }
 catch(err){
+
     document.body.innerHTML+=`<div style="color:red;">${err}</div>`
+
 }
-}
+
 const button = document.getElementById("create-signup-btn");
+   
+    console.log(button); 
 
-button.addEventListener("click", (event) => {
-    event.preventDefault();
-    //console.log('forgotbtn')
-
-    window.location.href='/user/createaccount'
-})
+    button.addEventListener("click", (event) => {
+        event.preventDefault();
+      
+        console.log('btn not working')
+    
+        window.location.href='/user/createaccount'
+    })
+}

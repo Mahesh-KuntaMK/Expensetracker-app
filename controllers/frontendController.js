@@ -94,12 +94,14 @@ exports.userlogin=async (req,res,next)=>{
                 return res.status(201).json({message:'succussfully loggedin',token:generateAccesstoken(user.id,user.email)})
             }
             else{
-                res.status(401).json({message:'password doesnt not match'})
+                return res.status(401).json({message:'password doesnt not match'})
             }
         })
 }
 catch(err){
-    return res.status(500).json({err:err})
+    console.log(err);
+    return  res.status(500).json({err:err})
+    
 }
 }
 
@@ -148,8 +150,8 @@ exports.resetPassword=(req,res,next)=>{
         sender,
         to:receivers,
         subject:' password reset link since you have forgotten current password',
-        textContent:`<a href='http://34.207.229.200:3000/password/resetpassword/{{params.id}}'>click here to reset your password</a>
-        http://34.207.229.200:3000/password/resetpassword/{{params.id}}`,
+        textContent:`<a href='http://localhost:3000/password/resetpassword/{{params.id}}'>click here to reset your password</a>
+        http://localhost:3000/password/resetpassword/{{params.id}}`,
         params:{
             id:reqkey.id
         }
